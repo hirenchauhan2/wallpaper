@@ -3,7 +3,10 @@ package wallpaper
 import (
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
+	"path"
+	"strings"
 	"syscall"
 	"unsafe"
 )
@@ -46,15 +49,47 @@ func SetWallpaper(filename string) error {
 	return nil
 }
 
+var errFileNotExists = errors.New("File does not exists")
+var errOnlySupportedFile = errors.New("Please provide supported file path")
+
 // SetLocalWallpaper sets the wallpaper from local file
 func SetLocalWallpaper(filename string) error {
 	// primary check, is file exists on drive?
 	// https://golangcode.com/check-if-a-file-exists/
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		fmt.Println("File does not exist")
-		return errors.New("File does not exists")
+		return errFileNotExists
 	}
-	fmt.Println("Found the file on system...")
+	// found the file, now a simple check if the given path is directory or file
+	// file will have an extension.
+	ext := strings.ToLower(path.Ext(filename))
+	// fmt.Println("File extension: ", ext)
+	// check for supported extensions
+	switch ext {
+	case ".jpg", ".jpeg", ".png", ".bmp":
+	default:
+		return errOnlySupportedFile
+	}
+	// found the file, now check if the file is an image or not
+	file, err := os.Open(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	// we only need first 512 to sniff to detect content type
+	buffer := make([]byte, 512)
+	_, err = file.Read(buffer)
+	if err != nil {
+		return err
+	}
+	// get the content type
+	contentType := http.DetectContentType(buffer)
+	// check the validity of content type
+	isValidType := isImageType(contentType)
+	if !isValidType {
+		return errUnsportedFile
+	}
+	// all valid, set wallpaper now
 	return SetWallpaper(filename)
 }
 
@@ -66,6 +101,5 @@ func SetWallpaperFromURL(url string) error {
 	if err != nil {
 		return err
 	}
-
 	return SetLocalWallpaper(filename)
 }
