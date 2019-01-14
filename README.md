@@ -7,7 +7,7 @@ A utility to set desktop wallpaper on Windows, (Mac & Linux WIP).
 It can set a wallpaper from an image's URL or local path to image file.
 
 ```bash
-wallpaper --i URL # --i for Internet. passing the image url
+wallpaper -i URL # --i for Internet. passing the image url
 # or
 wallpaper -f C:\path\to\image.png # -f or --file
 ```
