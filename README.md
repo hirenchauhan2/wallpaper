@@ -9,7 +9,8 @@ It can set a wallpaper from an image's URL or local path to image file.
 ```bash
 wallpaper -i URL # -i for Internet. passing the image url
 # or
-wallpaper -f C:\path\to\image.png # -f or --file
+wallpaper -f C:/path/to/image.png # -f or --file
+# For window the path looks weird, right? but it is working only with / only, \ or \\ in path is not working. idk...
 ```
 
 
