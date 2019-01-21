@@ -36,12 +36,10 @@ func main() {
 		case "--i", "-i":
 			err = wallpaper.SetWallpaperFromURL(args[2])
 			break
-		case "--version":
-		case "-v":
+		case "--version", "-v":
 			fmt.Println("Wallpaper util version 0.1.1")
 			break
-		case "--help":
-		case "-h":
+		case "--help", "-h":
 			printInfo()
 		default:
 			fmt.Println("unknown flag!")
