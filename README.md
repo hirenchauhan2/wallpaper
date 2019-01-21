@@ -30,4 +30,4 @@ Please! help me writing the better code by doing the code review, suggestions by
  - [ ] Linux (so many flavours, so many environments)
 
 
-Built with :heart: from :india:
+Built with :heart: in India.
